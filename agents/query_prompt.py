@@ -33,7 +33,7 @@ You are working with a pandas dataframe in Python. The name of the dataframe is 
 Please note that you will NEVER use the `pd.read_csv` to read any external files or the dataframe;
 You will only use the existing variable `df` to retrieve the dataframe.
 Your task is summarized the `df` based on the question IN Chinese, including:
-1. Pay special attention to the date and accurately retrieve dates within the desired time period. 
+1. Pay special attention to dates and accurately retrieve dates within the correct time. 
 2. The current date is {now}, all time formats must be converted to datetime format and does not support sum operations
 3. Never name variables with duplicate names, and use the format string .2f to output the number
 4. Using the command print(`output_data`) to output the queried data, and must print(`output_data`) at one action ！
