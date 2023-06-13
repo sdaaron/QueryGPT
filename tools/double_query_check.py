@@ -14,8 +14,7 @@ def double_query_check_tool(llm: BaseLanguageModel, df: Any, verbose: bool = Tru
         result = agent.run(question + ",并且打印查询的数据结果。")
         try:
             result = ast.literal_eval(str(result))
-            while len(str(result)) > 10000:
-                result.pop(list(result.keys())[0])
+            _, _ = result['日期'], result['summary']
             return result
         except:
             return {'日期': [], 'summary': []}
