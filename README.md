@@ -56,7 +56,5 @@ Run with the excel file API: ```poetry run python main.py --host xx --port xxx -
   - [ ] 支持自然语言操作表格数据
   - [ ] 用户登录
 
-- [ ] 支持更多模型
-
 - [ ] 支持更多Agent
   - [ ] 支持SQL Agent
