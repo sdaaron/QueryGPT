@@ -42,7 +42,7 @@ Run with the excel file API: ```poetry run python main.py --host xx --port xxx -
 
 - [ ] 交互优化
   - [ ] 界面UI美化
-  - [ ] 图标UI优化
+  - [ ] 图表样式优化
   - [ ] 流式输出
   - [ ] 引导用户正确提问，显示关联问题
   - [ ] 显示取数过程
