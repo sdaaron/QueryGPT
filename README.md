@@ -1,4 +1,13 @@
-## Quickstart
+<h1 align="center">
+📄<br>QueryGPT
+</h1>
+
+## 📚 QueryGPT
+
+> QueryGPT是一个基于`OpenAI GPT3.5` 和 `Langchain` 的自然语言数据查询工具。
+> 
+
+## 快速开始 Quickstart
 Follow these steps to quickly set up and run.
 1. Install Python 3.10, if not already installed.
 2. Clone this repository
@@ -24,3 +33,19 @@ OPENAI_API_KEY=xxx
 ```
 9. Run with the csv file API :```poetry run python main.py --host xx --port xxx --csv_path xxx.csv``` or
 Run with the excel file API: ```poetry run python main.py --host xx --port xxx --excel_path xxx.xlsx```
+
+
+## 路线图 Roadmap
+- [x] 自然语言查询表格数据，并输出答案
+- [x] 输出Echart图表
+- [x] 输出Markdown形式表格
+- [ ] 数据分析能力，对输出数据进行简单分析
+- [ ] 前端UI美化
+- [ ] 流式输出文本结果
+- [ ] 引导用户正确提问，关联问题联想
+- [ ] 支持连接数据库，支持运行SQL Agent
+- [ ] 显示执行过程
+- [ ] 向量检索
+- [ ] 支持数据上传
+- [ ] 支持自然语言操作表格数据
+- [ ] 用户登录功能
