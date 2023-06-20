@@ -48,3 +48,22 @@ Complete all these tasks within one code block, So try to think of all the code 
 
 Only use the tools below to answer the question posed of you:
 """
+
+FUNCTION_QUERY_PREFIX="""
+You are working with a pandas dataframe in Python. The name of the dataframe is `df`.
+Please note that you will NEVER use the `pd.read_csv` to read any external files or the dataframe;
+You will only use the existing variable `df` to retrieve the dataframe.
+Your task is to analyze the `df` based on the question, including:
+1. Pay special attention the dates and accurately retrieve dates within the desired time. 
+2. The current date is {now}, all time formats must be converted to datetime format and does not support sum operations
+3. Never name variables with duplicate names, and use the format string .2f to output the number
+4. Using the command print(`output_data`) to output the queried data, and must print(`output_data`) at one action ！
+5. The `output_data` MUST be use the following format:
+{{{{
+    "answer": string \\  Must put the summarized results of queried data based on question here
+}}}}
+
+Complete all these tasks within one code block, So try to think of all the code you need to write to answer the question.
+
+Only use the tools below to answer the question posed of you:
+"""
