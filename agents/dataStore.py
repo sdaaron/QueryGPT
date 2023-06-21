@@ -9,8 +9,6 @@ from tools.loader import CSVLoader
 from langchain.vectorstores.base import VectorStore
 
 from tools.plot_tool import plot_chart
-from dotenv import find_dotenv, load_dotenv
-load_dotenv(find_dotenv('../.env'))
 
 
 def set_vector_store(file_paths: List[str], embeddings: Embeddings, vector_store: VectorStore, encoding: str = "UTF-8") -> VectorStore:
@@ -23,6 +21,7 @@ def set_vector_store(file_paths: List[str], embeddings: Embeddings, vector_store
 
 class DataStore(BaseModel):
     df: Any = None
+    date_column_name: str = "日期"
     query_df: dict = {"query": [], "channel": []}
     vectors: VectorStore = None
 
@@ -43,26 +42,26 @@ class DataStore(BaseModel):
                 source_dict[file_path] = [column_name]
             source_set.add(file_path)
         for k, v in source_dict.items():
-            if "日期" not in v:
-                v.append("日期")
+            if self.date_column_name not in v:
+                v.append(self.date_column_name)
             df[v] = pd.read_csv(k)[v]
-        df["日期"] = pd.to_datetime(df["日期"])
+        df[self.date_column_name] = pd.to_datetime(df[self.date_column_name])
         self.df = df
         return df
 
     def query(self, time_series: List[str], column_names: List[str], dates: List[str] = None) -> json:
-        if "日期" in column_names: column_names.remove("日期")
+        if self.date_column_name in column_names: column_names.remove(self.date_column_name)
         if dates:
-            filtered_df = self.df[self.df["日期"].isin(dates)]
-            res_df = filtered_df.loc[:, ["日期"] + column_names].reset_index(drop=True)
-            res_df["日期"] = pd.to_datetime(res_df["日期"])
+            filtered_df = self.df[self.df[self.date_column_name].isin(dates)]
+            res_df = filtered_df.loc[:, [self.date_column_name] + column_names].reset_index(drop=True)
+            res_df[self.date_column_name] = pd.to_datetime(res_df[self.date_column_name])
             self.query_df["query"].append(res_df)
-            res_df["日期"] = res_df["日期"].dt.strftime("%Y-%m-%d")
+            res_df[self.date_column_name] = res_df[self.date_column_name].dt.strftime("%Y-%m-%d")
             return json.dumps(res_df.to_dict(orient='records'))
         elif time_series:
             start_date, end_date = pd.to_datetime(time_series[0]), pd.to_datetime(time_series[1])
-            filtered_df = self.df[(self.df["日期"] >= start_date) & (self.df["日期"] <= end_date)]
-            res_df = filtered_df.loc[:, ["日期"] + column_names].reset_index(drop=True)
+            filtered_df = self.df[(self.df[self.date_column_name] >= start_date) & (self.df[self.date_column_name] <= end_date)]
+            res_df = filtered_df.loc[:, [self.date_column_name] + column_names].reset_index(drop=True)
             self.query_df["query"].append(res_df)
             result_dict = {}
             for col_name in column_names:
@@ -74,16 +73,16 @@ class DataStore(BaseModel):
             return json.dumps({"error": "Please enter the correct time."})
 
     def calculate_growth_rate(self, time_series: List[str], column_names: List[str]) -> json:
-        if "日期" in column_names: column_names.remove("日期")
+        if self.date_column_name in column_names: column_names.remove(self.date_column_name)
         if not self.query_df["query"]: return json.dumps({"error": "Please perform a query operation first."})
         try:
             offset_start_date, offset_end_date = pd.to_datetime(time_series[0]), pd.to_datetime(time_series[1])
-            filtered_df = self.df.loc[:, ["日期"] + column_names]
+            filtered_df = self.df.loc[:, [self.date_column_name] + column_names]
         except:
             return json.dumps({"error": "Please enter the correct parameters."})
         current_df = self.query_df["query"][0]
-        start_date, end_date = current_df["日期"].iloc[0], current_df["日期"].iloc[-1]
-        overed_df = filtered_df[(filtered_df["日期"] >= offset_start_date) & (filtered_df["日期"] <= offset_end_date)]
+        start_date, end_date = current_df[self.date_column_name].iloc[0], current_df[self.date_column_name].iloc[-1]
+        overed_df = filtered_df[(filtered_df[self.date_column_name] >= offset_start_date) & (filtered_df[self.date_column_name] <= offset_end_date)]
         result_dict = {}
         value_type = "同比" if (end_date - offset_end_date).days > 92 else "环比"
         for col_name in column_names:
@@ -108,11 +107,11 @@ class DataStore(BaseModel):
         return json.dumps(result_dict)
 
     def channel_ratio(self, time_series: List[str], base_name: str, channel_names: list) -> json:
-        if "日期" in channel_names: channel_names.remove("日期")
+        if self.date_column_name in channel_names: channel_names.remove(self.date_column_name)
         if base_name in channel_names: channel_names.remove(base_name)
         start_date, end_date = pd.to_datetime(time_series[0]), pd.to_datetime(time_series[1])
-        filtered_df = self.df.loc[:, ["日期", base_name] + channel_names]
-        overed_df = filtered_df[(filtered_df["日期"] >= start_date) & (filtered_df["日期"] <= end_date)]
+        filtered_df = self.df.loc[:, [self.date_column_name, base_name] + channel_names]
+        overed_df = filtered_df[(filtered_df[self.date_column_name] >= start_date) & (filtered_df[self.date_column_name] <= end_date)]
         self.query_df["channel"].append(overed_df)
         result_dict = {}
         base_col_sum = overed_df[base_name].sum()
@@ -135,17 +134,17 @@ class DataStore(BaseModel):
         if self.query_df["query"]:
             query_data = pd.concat(self.query_df["query"] + self.query_df["channel"], axis=0).drop_duplicates().dropna().reset_index(drop=True)
         else:
-            query_data = pd.concat([self.df['日期'], self.df.iloc[:, :columns_limit]], axis=1).drop_duplicates().dropna().reset_index(drop=True)
-        query_data["日期"] = pd.to_datetime(query_data["日期"])
+            query_data = pd.concat([self.df[self.date_column_name], self.df.iloc[:, :columns_limit]], axis=1).drop_duplicates().dropna().reset_index(drop=True)
+        query_data[self.date_column_name] = pd.to_datetime(query_data[self.date_column_name])
         if len(query_data.columns) < columns_limit:
             # 获得相似列
             similarity_column_names = self.df.iloc[:, :columns_limit].columns.to_list()
             # 去除相同列
             [similarity_column_names.remove(col) for col in query_data.columns if col in similarity_column_names]
-            merged_df = pd.merge(self.df, query_data, on='日期')
+            merged_df = pd.merge(self.df, query_data, on=self.date_column_name)
             similarity_data = merged_df.loc[:, similarity_column_names]
             query_data = pd.concat([query_data, similarity_data], axis=1)
-        query_data["日期"] = query_data["日期"].dt.strftime("%Y-%m-%d")
+        query_data[self.date_column_name] = query_data[self.date_column_name].dt.strftime("%Y-%m-%d")
         query_data = query_data.round(2)
         if return_type == "dict":
             return query_data.to_dict(orient='list')
