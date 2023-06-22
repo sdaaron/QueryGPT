@@ -50,6 +50,7 @@ class DataStore(BaseModel):
         return df
 
     def query(self, time_series: List[str], column_names: List[str], dates: List[str] = None) -> json:
+        if not set(column_names).issubset(set(self.df.columns)): return json.dumps({"error": "Column name does not exist. Please enter a column name in the dataframe."})
         if self.date_column_name in column_names: column_names.remove(self.date_column_name)
         if dates:
             filtered_df = self.df[self.df[self.date_column_name].isin(dates)]
@@ -59,6 +60,7 @@ class DataStore(BaseModel):
             res_df[self.date_column_name] = res_df[self.date_column_name].dt.strftime("%Y-%m-%d")
             return json.dumps(res_df.to_dict(orient='records'))
         elif time_series:
+            if len(time_series) != 2: return json.dumps({"error": "Please enter the correct time series: [start_date, end_date]."})
             start_date, end_date = pd.to_datetime(time_series[0]), pd.to_datetime(time_series[1])
             filtered_df = self.df[(self.df[self.date_column_name] >= start_date) & (self.df[self.date_column_name] <= end_date)]
             res_df = filtered_df.loc[:, [self.date_column_name] + column_names].reset_index(drop=True)
@@ -73,15 +75,15 @@ class DataStore(BaseModel):
             return json.dumps({"error": "Please enter the correct time."})
 
     def calculate_growth_rate(self, time_series: List[str], column_names: List[str]) -> json:
-        if self.date_column_name in column_names: column_names.remove(self.date_column_name)
+        if len(time_series) != 2: return json.dumps({"error": "Please enter the correct time series: [start_date, end_date]."})
+        if not set(column_names).issubset(set(self.df.columns)): return json.dumps(
+            {"error": "Column name does not exist. Please enter a column name in the dataframe."})
         if not self.query_df["query"]: return json.dumps({"error": "Please perform a query operation first."})
-        try:
-            offset_start_date, offset_end_date = pd.to_datetime(time_series[0]), pd.to_datetime(time_series[1])
-            filtered_df = self.df.loc[:, [self.date_column_name] + column_names]
-        except:
-            return json.dumps({"error": "Please enter the correct parameters."})
+        if self.date_column_name in column_names: column_names.remove(self.date_column_name)
+        offset_start_date, offset_end_date = pd.to_datetime(time_series[0]), pd.to_datetime(time_series[1])
+        filtered_df = self.df.loc[:, [self.date_column_name] + column_names]
         current_df = self.query_df["query"][0]
-        start_date, end_date = current_df[self.date_column_name].iloc[0], current_df[self.date_column_name].iloc[-1]
+        start_date, end_date = pd.to_datetime(current_df[self.date_column_name].iloc[0]), pd.to_datetime(current_df[self.date_column_name].iloc[-1])
         overed_df = filtered_df[(filtered_df[self.date_column_name] >= offset_start_date) & (filtered_df[self.date_column_name] <= offset_end_date)]
         result_dict = {}
         value_type = "同比" if (end_date - offset_end_date).days > 92 else "环比"
@@ -96,6 +98,8 @@ class DataStore(BaseModel):
         return json.dumps(result_dict)
 
     def average_order_value(self, dividend_name: str, divisor_name: str) -> json:
+        if not {dividend_name, divisor_name}.issubset(set(self.df.columns)): return json.dumps(
+            {"error": "Column name does not exist. Please enter a column name in the dataframe."})
         try:
             dividend_sum = float(self.query_df["query"][0][dividend_name].sum())
             divisor_sum = float(self.query_df["query"][0][divisor_name].sum())
@@ -107,6 +111,9 @@ class DataStore(BaseModel):
         return json.dumps(result_dict)
 
     def channel_ratio(self, time_series: List[str], base_name: str, channel_names: list) -> json:
+        if len(time_series) != 2: return json.dumps({"error": "Please enter the correct time series: [start_date, end_date]."})
+        if not set(channel_names + [base_name]).issubset(set(self.df.columns)): return json.dumps(
+            {"error": "Column name does not exist. Please enter a column name in the dataframe."})
         if self.date_column_name in channel_names: channel_names.remove(self.date_column_name)
         if base_name in channel_names: channel_names.remove(base_name)
         start_date, end_date = pd.to_datetime(time_series[0]), pd.to_datetime(time_series[1])
@@ -122,12 +129,12 @@ class DataStore(BaseModel):
                 start_date.strftime("%Y-%m-%d"), end_date.strftime("%Y-%m-%d"), channel_col_sum, channel_ratio)
         return json.dumps(result_dict)
 
-    def plot_data(self, chart_title: str, chart_type: str) -> json:
+    def plot_data(self, chart_title: str, chart_type: str, plot_image: bool) -> json:
         if chart_type == "pie":
             data = self.query_df["channel"][0]
         else:
             data = pd.concat(self.query_df["query"], axis=0)
-        image_path = plot_chart(data, chart_title, chart_type)
+        image_path = plot_chart(data, chart_title, chart_type, plot_image)
         return json.dumps({"image_path": image_path})
 
     def gather(self, columns_limit: int = 5, return_type: str = "dict"):

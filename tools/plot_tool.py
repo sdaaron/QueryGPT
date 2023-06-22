@@ -9,7 +9,9 @@ plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False
 
 
-def plot_chart(data: Any, title: str, chart_type: str) -> str:
+def plot_chart(data: Any, title: str, chart_type: str, plot_image: bool = True) -> str:
+    unique_filename = "images/" + str(uuid.uuid4())[:8] + '.png'
+    if not plot_image: return unique_filename
     # 创建新的图表
     fig, ax = plt.subplots()
 
@@ -47,7 +49,6 @@ def plot_chart(data: Any, title: str, chart_type: str) -> str:
         ax.legend(loc="best")
     ax.set_title(title)
     ax.tick_params(axis='x', labelsize=8)
-    unique_filename = "images/" + str(uuid.uuid4())[:8] + '.png'
     plt.savefig(unique_filename)
     plt.close(fig)
 

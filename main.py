@@ -40,10 +40,10 @@ async def chat(question: ChatRequest = Body(...)):
     response_model=ChatResponse,)
 async def function_chat(question: ChatRequest = Body(...)):
     try:
-        similarity_df = DATA_STORE.init_df(question.question)
-        agent = FunctionQueryAgent(function_llm, DATA_STORE, similarity_df, verbose=args.verbose)
+        DATA_STORE.init_df(question.question)
+        agent = FunctionQueryAgent(function_llm, DATA_STORE, args=args)
         response_dict = agent.predict(question.question)
-        response = function_query_response_parse(response_dict, args.api_endpoint)
+        response = function_query_response_parse(response_dict, args.api_endpoint, args.plot_image)
         return ChatResponse(response=response)
     except Exception as e:
         print("Error:", e)
@@ -88,6 +88,7 @@ def get_args():
     parser.add_argument("--csv_path", type=str, default="data/data.csv")
     parser.add_argument("--excel_path", type=str, default=None)
     parser.add_argument("--verbose", type=bool, default=True)
+    parser.add_argument("--plot_image", type=bool, default=False)
     parser.add_argument("--api_endpoint", type=str, default="https://127.0.0.1:8000/file")
     args = parser.parse_args()
     return args

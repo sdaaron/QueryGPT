@@ -19,7 +19,7 @@ from agents.query_prompt import FUNCTION_QUERY_PREFIX
 class QueryToolInput(BaseModel):
     time_series: list = Field(..., description="""Will be the current consecutive time series: [start_date, end_date], e.g. ["2021-03-01", "2021-03-15"]""")
     date_list: list = Field(..., description='''Will be the single date or multiple non-consecutive dates, e.g. ["2021-03-01", "2021-03-15", "2021-05-15", ...]''')
-    column_names: list = Field(..., description='''Must be the dataframe column names, e.g. ["交易人数", "交易金额"]''')
+    column_names: list = Field(..., description='''Must be the column names of dataframe , e.g. ["交易人数", "交易金额"]''')
 
 
 class QueryTool(BaseTool):
@@ -79,7 +79,6 @@ class AverageOrderValue(BaseTool):
             divisor_name: str,
             run_manager: Optional[CallbackManagerForToolRun] = None,
     ) -> str:
-        """Use the LLM to check the query."""
         result = self.data_store.average_order_value(dividend_name, divisor_name)
         return result
 
@@ -156,20 +155,22 @@ class PlotCharts(BaseTool):
     """
     args_schema: Type[BaseModel] = PlotChartsInput
     data_store: DataStore = None
+    plot_image: bool = True
 
     def _run(self,
              chart_title: str,
              chart_type: str,
              run_manager: Optional[CallbackManagerForToolRun] = None,
              ) -> str:
-        result = self.data_store.plot_data(chart_title, chart_type)
+        result = self.data_store.plot_data(chart_title, chart_type, self.plot_image)
         return result
 
     async def _arun(self,
+                    chart_title: str,
                     chart_type: str,
                     run_manager: Optional[CallbackManagerForToolRun] = None,
                     ) -> str:
-        result = json.dumps({"chart_type": chart_type})
+        result = self.data_store.plot_data(chart_title, chart_type, self.plot_image)
         return result
 
 

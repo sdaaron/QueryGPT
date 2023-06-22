@@ -6,6 +6,7 @@ from langchain.base_language import BaseLanguageModel
 from langchain.callbacks.base import BaseCallbackManager
 from langchain.chat_models import ChatOpenAI
 from langchain.agents.openai_functions_agent.base import OpenAIFunctionsAgent
+from langchain.agents.openai_functions_multi_agent.base import OpenAIMultiFunctionsAgent
 from langchain.agents import Tool, AgentExecutor
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts.chat import (
@@ -43,13 +44,12 @@ class FunctionQueryAgent:
 
     def __init__(self, llm: BaseLanguageModel,
                  data_store: DataStore,
-                 df: Any,
-                 verbose: bool = False,
+                 args: Any,
                  callback_manager: Optional[BaseCallbackManager] = None,
                  **kwargs: Dict[str, Any]):
         self.llm = llm
         self.data_store = data_store
-        self.verbose = verbose
+        self.verbose = args.verbose
         self.callback_manager = callback_manager
         try:
             import pandas as pd
@@ -61,10 +61,10 @@ class FunctionQueryAgent:
                  AverageOrderValue(data_store=data_store),
                  YearOverYear(data_store=data_store),
                  MonthOverMonth(data_store=data_store),
-                 PlotCharts(data_store=data_store),
-                 FilterData(llm=ChatOpenAI(), df=df),
+                 PlotCharts(data_store=data_store, plot_image=args.plot_image),
+                 FilterData(llm=ChatOpenAI(), df=data_store.df),
                  CalculateRatio(data_store=data_store)]
-        prompt = self.create_prompt(df)
+        prompt = self.create_prompt(data_store.df)
         agent = OpenAIFunctionsAgent(llm=llm, tools=tools, prompt=prompt)
         memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
         self.agent_executor = AgentExecutor.from_agent_and_tools(
@@ -100,12 +100,13 @@ class FunctionQueryAgent:
         now = datetime.now().strftime("%Y-%m-%d")
         messages = [
             SystemMessage(content=f'''You are a helpful AI assistant.You will proficient in utilizing various tools to answer questions effectively. 
-            Your all calculation results will from the tools and compile these results to the answer the question.
-            You will infer all correct time and column names based on the question, and extract the time and column names from the question according to the dataframe.
-            You should NEVER call other functions before "data_query" has been called in the conversation.
-            Following is the dataframe head:
-            {query_df.head(1).to_markdown()}
-            The current date is {now}.'''),
+                                        Your all calculation results will from the tools and compile these results to the answer the question.
+                                        You should NEVER call other functions before "data_query" has been called in the conversation.
+                                        You will infer all the correct time and column names based on the question, and extract the time and column names from the question according to the dataframe.
+                                        If the provided column name is not correct, you will input the column name from the dataframe that is most similar to it.
+                                        All column names MUST in the following dataframe::
+                                        {query_df.head(1).to_markdown()}
+                                        The current date is {now}.'''),
             HumanMessagePromptTemplate.from_template("{input}"),
             MessagesPlaceholder(variable_name="agent_scratchpad"),
         ]

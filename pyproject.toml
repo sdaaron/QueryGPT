@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.12"
-langchain = "0.0.204"
+langchain = "0.0.208"
 fastapi = {extras = ["all"], version = "^0.95.2"}
 pandas = "1.5.3"
 openai = "^0.27.7"
