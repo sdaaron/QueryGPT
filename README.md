@@ -5,33 +5,24 @@
 ## 📚 QueryGPT
 
 > QueryGPT是一个基于`OpenAI GPT3.5` 和 `Langchain` 的自然语言数据查询工具。
+> 基于`OpenAI GPT3.5-turobo-0613`最新发布的`Function Calling`实现，比Langchain官方的`Pandas Agent`和`CSV Agent` **更快**、**更稳定**、**更准确**
+> 实现了`Markdown`格式、``JSON格式`的数据输出，实现了`Echart`形式和`Matplotlib`图表绘制。
 
 ## 快速开始
 Follow these steps to quickly set up and run.
-1. Install Python 3.10, if not already installed.
-2. Clone this repository
-3. Navigate to the cloned repository directory: cd /path/to/DataBot
-4. Install poetry: ```pip install poetry```
-5. Create a new virtual environment with Python 3.10: ```poetry env use python3.10```
-6. Activate the virtual environment:```poetry shell```
-7. Install app dependencies:```poetry install```
-8. Set the required environment variables in *.env.example* and rename  the file to *.env*
+1. 安装Python 3.10和pip.
+2. `git clone git@github.com:sdaaron/QueryGPT.git`
+3. `cd QueryGPT`
+4. 安装依赖`pip install -r requirements.txt`
+5. 将`.env.example`重命名为`.env`并修改环境变量
 ```
-# openai
-OPENAI_API_KEY=xxx
-
-# proxy
-HTTP_PROXY=http://127.0.0.1:7890
-HTTPS_PROXY=http://127.0.0.1:7890
-
-# Azure OpenAI
-OPENAI_API_TYPE=azure
-OPENAI_API_VERSION=2023-05-15
-OPENAI_API_BASE=xxx
-OPENAI_API_KEY=xxx
+OPENAI_API_KEY='你的OpenAI Key'
+OPENAI_API_BASE="代理地址（非必须）"
+OPENAI_API_VERSION="2020-11-07（非必须）"
 ```
-9. Run with the csv file API :```poetry run python main.py --host xx --port xxx --csv_path xxx.csv``` or
-Run with the excel file API: ```poetry run python main.py --host xx --port xxx --excel_path xxx.xlsx```
+6. 启动命令
+启动程序并指定本地CSV文件 :```python main.py --host xx --port xxx --csv_path xxx.csv```
+启动程序并指定本地Excel文件: ```python main.py --host xx --port xxx --excel_path xxx.xlsx```
 
 
 ## 路线图 Roadmap
@@ -46,7 +37,6 @@ Run with the excel file API: ```poetry run python main.py --host xx --port xxx -
   - [ ] 流式输出
   - [ ] 引导用户正确提问，显示关联问题
   - [ ] 显示取数过程
-  - [ ] 显示Langchain Agent思考过程
 
 - [ ] 实现更多功能
   - [ ] 数据分析能力，对输出数据进行简单分析
