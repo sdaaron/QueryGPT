@@ -9,7 +9,7 @@
 > 实现了`Markdown`格式、``JSON格式`的数据输出，支持`Echart`形式和`Matplotlib`图表绘制。  
 
 ## 快速开始
-Follow these steps to quickly set up and run.
+按照以下命令启动程序：
 1. 安装Python 3.10和pip.
 2. `git clone git@github.com:sdaaron/QueryGPT.git`
 3. `cd QueryGPT`
