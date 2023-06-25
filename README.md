@@ -25,7 +25,7 @@ OPENAI_API_VERSION="2020-11-07（非必须）"
 启动程序并指定本地Excel文件: ```python main.py --host xx --port xxx --excel_path xxx.xlsx```
 
 
-## 路线图 Roadmap
+## 路线图
 - [x] 实现数据查询功能和结果输出
   - [x] 自然语言查询表格数据，并输出文本答案
   - [x] 输出Markdown格式数据
@@ -48,6 +48,3 @@ OPENAI_API_VERSION="2020-11-07（非必须）"
   - [ ] 通过向量检索缩小取数范围
   - [ ] 支持自然语言操作表格数据
   - [ ] 用户登录
-
-- [ ] 支持更多Agent
-  - [ ] 支持SQL Agent
