@@ -2,7 +2,7 @@
 📄<br>QueryGPT
 </h1>
 
-## 📚 QueryGPT
+## 📚 QueryGPT 自然语言数据查询
 
 > 1. QueryGPT是一个基于`OpenAI GPT3.5` 和 `Langchain` 的自然语言数据查询工具。  
 > 2. 基于`OpenAI GPT3.5-turobo-0613`和`Langchain Function Agent`实现，相比`Pandas Agent`和`CSV Agent` **更快、稳定和准确**。  
@@ -27,9 +27,12 @@ OPENAI_API_VERSION="2020-11-07（非必须）"
 
 ## 路线图 Roadmap
 - [x] 实现数据查询功能和结果输出
-  - [x] 自然语言查询表格数据，并输出答案
+  - [x] 自然语言查询表格数据，并输出文本答案
+  - [x] 输出Markdown格式数据
+  - [x] 输出JSON格式数据
+  - [x] 调用Matplotlib绘制柱形图、折线图、饼状图
   - [x] 输出Echart图表
-  - [x] 输出Markdown形式表格
+  - [x] 输出表格
 
 - [ ] 交互优化
   - [ ] 界面UI美化
