@@ -13,14 +13,12 @@ from tools.response_parser import query_response_parse, function_query_response_
 from agents.dataStore import set_vector_store, DataStore
 from models.api import ChatResponse, ChatRequest
 
-from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi import FastAPI, File, HTTPException, Depends, Body
 from dotenv import find_dotenv, load_dotenv
 langchain.llm_cache = InMemoryCache()
 load_dotenv(find_dotenv('.env'))
 app = FastAPI()
-app.mount("/.well-known", StaticFiles(directory=".well-known"), name="static")
 
 
 @app.post(
