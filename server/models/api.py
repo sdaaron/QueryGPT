@@ -15,7 +15,7 @@ class ChatResponse(BaseModel):
         schema_extra = {
             "example": {
                         "response": {
-                            "text": "2023年4月1日-6日基金整体交易金额总和为 39085.83",
+                            "text": "2023年4月1日-6日订单金额总和为 39085.83",
                             "data": {
                               "日期": [
                                 "2023-04-01",
@@ -25,7 +25,7 @@ class ChatResponse(BaseModel):
                                 "2023-04-05",
                                 "2023-04-06"
                               ],
-                              "基金整体交易金额": [
+                              "订单金额": [
                                 "2057.93",
                                 "7638.26",
                                 "6230.90",
@@ -41,4 +41,4 @@ class ChatResponse(BaseModel):
 
 
 class ChatRequest(BaseModel):
-    question: str = Field(..., description="Question text", example="2023年4月1日-6日基金整体交易金额是多少？帮我做一个折线图呈现走势")
+    question: str = Field(..., description="Question text", example="2023年4月1日-6日订单金额是多少？帮我做一个折线图呈现走势")
