@@ -16,10 +16,10 @@
 ## 快速开始
 
 ### 启动API
-1. 安装`Python 3.10`和`pip`，创建虚拟环境.
+1. 安装`Python 3.10`和`pip`，创建虚拟环境
 2. `git clone git@github.com:sdaaron/QueryGPT.git`
 3. `cd QueryGPT/server`
-4. 安装依赖`pip install -r requirements.txt`
+4. `pip install -r requirements.txt`
 5. 将`.env.example`重命名为`.env`并修改环境变量
 ```
 OPENAI_API_KEY='你的OpenAI Key'
