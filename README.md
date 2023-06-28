@@ -1,5 +1,5 @@
 <h1 align="center">
-📄<br>QueryGPT
+  <img src="img/icon.png" alt="icon" style="vertical-align:middle;"> QueryGPT
 </h1>
 
 ## 📚 QueryGPT 自然语言数据查询
@@ -56,7 +56,7 @@ OPENAI_API_VERSION="2020-11-07（非必须）"
       - [x] 计算客单价、占比、增长率
       - [x] 计算月同环比、年同环比
       - [ ] 支持更多自定义计算
-    - [x] 支持ydata-profiling，实现简单数据描述
+    - [x] 集成ydata-profiling，实现简单数据描述
   - [x] Embedding相似度搜索
   - [x] 支持多种格式输出
     - [x] 输出Markdown格式数据
