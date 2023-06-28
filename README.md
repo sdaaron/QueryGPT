@@ -9,9 +9,9 @@
 > 3. 实现了`Markdown`格式、`JSON格式`的数据输出，支持`Echart`形式和`Matplotlib`图表绘制。  
 
 ### 效果实例
-<div align="center">
-  <img src="img/example.png" alt="icon" style="vertical-align:middle;">
-</div>
+<h1 align="center">
+  <img src="img/example.png" alt="example" style="vertical-align:middle;">
+</h1>
 
 ## 快速开始
 
