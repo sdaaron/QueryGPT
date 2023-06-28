@@ -2,7 +2,7 @@
   <img src="img/icon.png" alt="icon" style="vertical-align:middle;"> QueryGPT
 </h1>
 
-## 📚 QueryGPT 自然语言数据查询
+## QueryGPT 自然语言数据查询
 
 > 1. QueryGPT是一个基于`OpenAI GPT3.5` 和 `Langchain` 的自然语言数据查询工具。  
 > 2. 基于`OpenAI GPT3.5-turobo-0613`和`Langchain Function Agent`实现，相比`Pandas Agent`和`CSV Agent` **更快、稳定和准确**。  
