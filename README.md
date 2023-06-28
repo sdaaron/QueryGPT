@@ -8,8 +8,10 @@
 > 2. 基于`OpenAI GPT3.5-turobo-0613`和`Langchain Function Agent`实现，相比`Pandas Agent`和`CSV Agent` **更快、稳定和准确**。  
 > 3. 实现了`Markdown`格式、`JSON格式`的数据输出，支持`Echart`形式和`Matplotlib`图表绘制。  
 
+
 ## 快速开始
-按照以下命令启动程序：
+
+### 启动API
 1. 安装Python 3.10和pip.
 2. `git clone git@github.com:sdaaron/QueryGPT.git`
 3. `cd QueryGPT`
@@ -24,10 +26,12 @@ OPENAI_API_VERSION="2020-11-07（非必须）"
 启动程序并指定本地CSV文件 :```python main.py --host xx --port xxx --csv_path xxx.csv```
 启动程序并指定本地Excel文件: ```python main.py --host xx --port xxx --excel_path xxx.xlsx```
 
+### 启动UI
+
 
 ## 项目介绍
 1. 项目简介  
-    * 基于OpenAI的查询数据工具。该工具采用FastAPI作为后端框架，并通过使用Langchain来实现具体功能。工具的优点包括数据不经过接口，所有取数操作在本地完成，确保数据的私密性；同时，该工具是可扩展的，开发者可以在Langchain tool中增加所需的类，实现自定义功能。此外，该工具还采用Embedding相似度搜索技术，实现多文件搜索，快速定位目标列，减少token使用数量。
+    * 基于OpenAI的查询数据工具。该工具采用FastAPI作为后端框架，并通过使用Langchain来实现具体功能。工具的优点包括数据不经过接口，所有取数操作在本地完成，确保数据的私密性；同时，该工具是可扩展的，开发者可以在Langchain tool中增加所需的类，实现自定义功能。此外，该工具还采用Embedding相似度搜索，实现多文件搜索，快速定位目标列，减少token使用数量。
 1. 功能和特点   
    * 通过调用OpenAI提供的接口，获取所需的信息，再调用接口，完成数据查询，并将信息进行预处理，只保留有效信息，确保了数据的私密性以及有效性。
    * Langchain实现agent功能，通过编写自定义的类，可以扩展工具的功能。开发者可以根据自己的需求，在tool中增加所需的类，以实现特定的查询功能。
@@ -44,25 +48,33 @@ OPENAI_API_VERSION="2020-11-07（非必须）"
 
 
 ## 路线图
-- [x] 实现数据查询功能和结果输出
-  - [x] 自然语言查询表格数据，并输出文本答案
-  - [x] 输出Markdown格式数据
-  - [x] 输出JSON格式数据
-  - [x] 调用Matplotlib绘制柱形图、折线图、饼状图
-  - [x] 输出Echart图表
-  - [x] 输出表格
+- [ ] 实现数据查询功能和结果输出
+  - [x] 自定义Langchain Function Agent
+    - [x] 实现Query Tool，实现基础取数需求
+    - [x] 实现Plot Tool，实现图表绘制需求
+    - [ ] 实现多种自定义的常用计算工具
+      - [x] 计算客单价、占比、增长率
+      - [x] 计算月同环比、年同环比
+      - [x] 支持更多自定义计算
+    - [x] 支持ydata-profiling，实现简单数据描述
+  - [x] Embedding相似度搜索
+  - [x] 支持多种格式输出
+    - [x] 输出Markdown格式数据
+    - [x] 输出JSON格式数据
+    - [x] 调用Matplotlib绘制簇状柱形图、折线图、饼状图
+    - [x] 输出Echart图表
+    - [x] 输出表格
 
 - [ ] 交互优化
-  - [ ] 界面UI美化
-  - [ ] 图表样式优化
+  - [x] 界面UI美化
+  - [x] 图表样式优化
   - [ ] 流式输出
   - [ ] 引导用户正确提问，显示关联问题
   - [ ] 显示取数过程
 
 - [ ] 实现更多功能
-  - [ ] 数据分析能力，对输出数据进行简单分析
+  - [ ] 更丰富的数据分析能力，对输出数据进行简单分析
   - [ ] 支持用户上传表格数据
   - [ ] 支持连接数据库
-  - [ ] 通过向量检索缩小取数范围
   - [ ] 支持自然语言操作表格数据
   - [ ] 用户登录
