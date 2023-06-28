@@ -20,9 +20,9 @@
 ```
 OPENAI_API_KEY='你的OpenAI Key'
 ```
-6. 启动命令
-启动程序并指定本地CSV文件 :```python main.py --host xx --port xxx --csv_path xxx.csv```
-启动程序并指定本地Excel文件: ```python main.py --host xx --port xxx --excel_path xxx.xlsx```
+6. 启动命令  
+启动程序并指定本地CSV文件 :```python main.py --host xx --port xxx --csv_path xxx.csv```  
+启动程序并指定本地Excel文件: ```python main.py --host xx --port xxx --excel_path xxx.xlsx```  
 
 ### 启动UI
 
