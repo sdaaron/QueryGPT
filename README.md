@@ -19,8 +19,6 @@
 5. 将`.env.example`重命名为`.env`并修改环境变量
 ```
 OPENAI_API_KEY='你的OpenAI Key'
-OPENAI_API_BASE="代理地址（非必须）"
-OPENAI_API_VERSION="2020-11-07（非必须）"
 ```
 6. 启动命令
 启动程序并指定本地CSV文件 :```python main.py --host xx --port xxx --csv_path xxx.csv```
