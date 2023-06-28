@@ -16,20 +16,24 @@
 ## 快速开始
 
 ### 启动API
-1. 安装Python 3.10和pip.
+1. 安装`Python 3.10`和`pip`，创建虚拟环境.
 2. `git clone git@github.com:sdaaron/QueryGPT.git`
-3. `cd QueryGPT`
+3. `cd QueryGPT/server`
 4. 安装依赖`pip install -r requirements.txt`
 5. 将`.env.example`重命名为`.env`并修改环境变量
 ```
 OPENAI_API_KEY='你的OpenAI Key'
 ```
 6. 启动命令  
-启动程序并指定本地CSV文件 :```python main.py --host xx --port xxx --csv_path xxx.csv```  
-启动程序并指定本地Excel文件: ```python main.py --host xx --port xxx --excel_path xxx.xlsx```  
+使用本地默认数据文件启动API :```python main.py --host xx --port xxx```  
+指定本地CSV文件启动API :```python main.py --host xx --port xxx --csv_path xxx.csv```  
+指定本地Excel文件启动API: ```python main.py --host xx --port xxx --excel_path xxx.xlsx```  
 
 ### 启动UI
-
+1. `cd QueryGPT/client`
+2. `pnpm install`
+3. `npm run dev`
+4. 确保你的`vite.config.js`中的`proxy`配置，与你的API服务地址一致
 
 ## 项目介绍
 1. 项目简介  
