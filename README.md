@@ -1,7 +1,6 @@
 <h1 align="center">
   <img src="img/icon.png" alt="icon" style="vertical-align:middle;"> QueryGPT
 </h1>
-[![License](https://img.shields.io/github/license/alibaba/fastjson2?color=4D7A97&logo=apache)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 ## 📚 QueryGPT 自然语言数据查询
 
