@@ -68,7 +68,7 @@ OPENAI_API_KEY='你的OpenAI Key'
     - [x] 输出Markdown格式数据
     - [x] 输出JSON格式数据
     - [x] 调用Matplotlib绘制簇状柱形图、折线图、饼状图
-    - [x] 输出Echart图表
+    - [x] 输出Echarts图表
     - [x] 输出表格
 
 - [ ] 交互优化
