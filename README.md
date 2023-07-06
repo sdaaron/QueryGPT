@@ -53,6 +53,11 @@ Start the API with a specific local Excel file: `python main.py --host xx --port
    * Support more query scenarios: The tool can be extended to support more query scenarios for structured data, such as database queries. This can increase the tool's applicability and meet a wider range of user needs.
    * Implement a universal data repository: To support more query methods and data types, consider implementing a universal data repository. By building a data repository, users can flexibly perform data queries and analysis, and enjoy more features and capabilities.  
 
+## Contact Us
+<div align="center">
+  <img src="img/wechat.png" alt="example" style="vertical-align:middle;">
+</div>
+
 
 ## Roadmap
 - [ ] Implement data query functionality and result output
