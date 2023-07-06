@@ -8,6 +8,7 @@
   [![GitHub Forks](https://img.shields.io/github/forks/sdaaron/QueryGPT)](https://github.com/sdaaron/QueryGPT/fork)
   [![GitHub Contributors](https://img.shields.io/github/contributors/sdaaron/QueryGPT)](https://github.com/sdaaron/QueryGPT/graphs/contributors)
 </div>
+
 ## QueryGPT 自然语言数据查询
 
 > 1. QueryGPT是一个基于`OpenAI GPT3.5` 和 `Langchain` 的自然语言数据查询工具。  
