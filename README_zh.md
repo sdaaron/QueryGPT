@@ -1,12 +1,10 @@
 <h1 align="center">
   <img src="img/icon.png" alt="icon" style="vertical-align:middle;"> QueryGPT
 </h1>
-<div align="center">
   [![License](https://img.shields.io/github/license/alibaba/fastjson2?color=4D7A97&logo=apache)](https://www.apache.org/licenses/LICENSE-2.0.html)
   [![GitHub Stars](https://img.shields.io/github/stars/sdaaron/QueryGPT)](https://github.com/sdaaron/QueryGPT/stargazers)
   [![GitHub Forks](https://img.shields.io/github/forks/sdaaron/QueryGPT)](https://github.com/sdaaron/QueryGPT/fork)
   [![GitHub Contributors](https://img.shields.io/github/contributors/sdaaron/QueryGPT)](https://github.com/sdaaron/QueryGPT/graphs/contributors)
-</div>
 
 ## QueryGPT 自然语言数据查询
 
