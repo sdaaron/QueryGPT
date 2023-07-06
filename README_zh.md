@@ -6,7 +6,7 @@
 
 > 1. QueryGPT是一个基于`OpenAI GPT3.5` 和 `Langchain` 的自然语言数据查询工具。  
 > 2. 基于`OpenAI GPT3.5-turobo-0613`和`Langchain Function Agent`实现，相比`Pandas Agent`和`CSV Agent` **更快、稳定和准确**。  
-> 3. 实现了`Markdown`格式、`JSON格式`的数据输出，支持`Echart`形式和`Matplotlib`图表绘制。  
+> 3. 实现了`Markdown`格式、`JSON格式`的数据输出，支持`Echarts`形式和`Matplotlib`图表绘制。  
 
 ## 效果示例
 <div align="center">
