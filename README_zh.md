@@ -1,6 +1,7 @@
 <h1 align="center">
   <img src="img/icon.png" alt="icon" style="vertical-align:middle;"> QueryGPT
 </h1>
+
   [![License](https://img.shields.io/github/license/alibaba/fastjson2?color=4D7A97&logo=apache)](https://www.apache.org/licenses/LICENSE-2.0.html)  
   [![GitHub Stars](https://img.shields.io/github/stars/sdaaron/QueryGPT)](https://github.com/sdaaron/QueryGPT/stargazers)  
   [![GitHub Forks](https://img.shields.io/github/forks/sdaaron/QueryGPT)](https://github.com/sdaaron/QueryGPT/fork)  
