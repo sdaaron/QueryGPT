@@ -8,6 +8,19 @@ class QueryResult(BaseModel):
     chart_type: str
 
 
+class DeleteRequest(BaseModel):
+    ids: List[str]
+    delete_all: Optional[bool] = False
+
+
+class UpsertResponse(BaseModel):
+    ids: List[str]
+
+
+class DeleteResponse(BaseModel):
+    success: bool
+
+
 class ChatResponse(BaseModel):
     response: QueryResult = Field(..., description='''Response text, chart_type in ["None", "Line", "Pie", "Bar"]''')
 

@@ -7,16 +7,45 @@ from typing import List
 from langchain.embeddings.base import Embeddings
 from tools.loader import CSVLoader
 from langchain.vectorstores.base import VectorStore
+from langchain.schema import Document
 
 from tools.plot_tool import plot_chart
 
 
 def set_vector_store(file_paths: List[str], embeddings: Embeddings, vector_store: VectorStore, encoding: str = "UTF-8") -> VectorStore:
     csv_data = []
-    for file_path in file_paths:
-        csv_data.extend(CSVLoader(file_path, encoding=encoding).load())
-    vectors = vector_store.from_documents(csv_data, embeddings)
+    if len(file_paths) > 0:
+        for file_path in file_paths:
+            csv_data.extend(CSVLoader(file_path, encoding=encoding).load())
+        vectors = vector_store.from_documents(csv_data, embeddings)
+    else:
+        vectors = vector_store.from_documents([Document(page_content="Initial Parameter", metadata=dict(page=0))], embeddings)
+        vectors.delete([vectors.index_to_docstore_id[0]])
     return vectors
+
+
+def merge_df(column_names: list, df_paths: list, date_column_name: str) -> DataFrame:
+    result_df = DataFrame()
+    if len(df_paths) == 1:
+        raw_df = pd.read_csv(df_paths[0])
+    else:
+        df_list = [pd.read_csv(path) for path in df_paths]
+        for i, df in enumerate(df_list):
+            if i == 0:
+                raw_df = pd.merge(df, df_list[i + 1], on=date_column_name, suffixes=('', f'_{i}'))
+            elif i > 1:
+                raw_df = pd.merge(raw_df, df, on=date_column_name, suffixes=('', f'_{i}'))
+    for column_name in column_names:
+        if (raw_df[column_name].dtype in ["O", "str"]) and column_name != date_column_name:
+            result_df[column_name] = raw_df[column_name].str.extract('(\d+\.\d+)').astype(float)
+        else:
+            result_df[column_name] = raw_df[column_name]
+    result_df = result_df.dropna(subset=[date_column_name])
+    result_df = result_df.dropna(axis=1, thresh=int(len(result_df) * 0.2))
+    result_df = result_df.fillna(0).drop_duplicates()
+    result_df[date_column_name] = pd.to_datetime(result_df[date_column_name])
+    result_df = result_df.sort_values(date_column_name)
+    return result_df
 
 
 class DataStore(BaseModel):
@@ -29,23 +58,20 @@ class DataStore(BaseModel):
         arbitrary_types_allowed = True
 
     def init_df(self, query: str) -> DataFrame:
-        source_dict = {}
+        column_names = []
         source_set = set()
-        df = DataFrame()
         results = self.vectors.similarity_search(query=query, k=20)
+        if len(results) == 0:
+            df = DataFrame()
+            self.df = df
+            return df
         for clo in results:
             column_name = clo.page_content
             file_path = clo.metadata["source"]
-            if file_path in source_set:
-                source_dict[file_path].append(column_name)
-            else:
-                source_dict[file_path] = [column_name]
+            column_names.append(column_name)
             source_set.add(file_path)
-        for k, v in source_dict.items():
-            if self.date_column_name not in v:
-                v.append(self.date_column_name)
-            df[v] = pd.read_csv(k)[v]
-        df[self.date_column_name] = pd.to_datetime(df[self.date_column_name])
+        if self.date_column_name not in column_names: column_names.append(self.date_column_name)
+        df = merge_df(column_names, list(source_set), self.date_column_name)
         self.df = df
         return df
 
@@ -152,6 +178,8 @@ class DataStore(BaseModel):
             similarity_data = merged_df.loc[:, similarity_column_names]
             query_data = pd.concat([query_data, similarity_data], axis=1)
         query_data[self.date_column_name] = query_data[self.date_column_name].dt.strftime("%Y-%m-%d")
+        query_data = query_data.dropna(subset=[self.date_column_name])
+        query_data = query_data.fillna(0)
         query_data = query_data.round(2)
         if return_type == "dict":
             return query_data.to_dict(orient='list')
