@@ -61,7 +61,7 @@ OPENAI_API_KEY='你的OpenAI Key'
 
 ## 加入我们
 <div align="center">
-  <img src="img/wechat.png" alt="example" style="vertical-align:middle;">
+  <img src="img/wechat1.png" alt="example" style="vertical-align:middle;">
 </div>
 
 
