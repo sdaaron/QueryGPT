@@ -62,7 +62,7 @@ Start the API with a specific local Excel file: `python main.py --host xx --port
 
 ## Contact Us
 <div align="center">
-  <img src="img/wechat.png" alt="example" style="vertical-align:middle;">
+  <img src="img/wechat1.png" alt="example" style="vertical-align:middle;">
 </div>
 
 
